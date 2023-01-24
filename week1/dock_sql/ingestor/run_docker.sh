@@ -4,6 +4,7 @@ URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green
 
 docker run -it \
     --network=pg-network \
+    --rm `Delete container after running, save memories` \
     taxi_ingest:v001 \
         --user=root \
         --password=root \
