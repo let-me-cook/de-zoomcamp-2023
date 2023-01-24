@@ -10,10 +10,10 @@ docker run -d \
     --name=pg-database \
     postgres:13
 
-docker run -d \
-    -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
-    -e PGADMIN_DEFAULT_PASSWORD="root" \
-    -p 8080:80 \
-    --network=pg-network \
-    --name=pg-admin \
-    dpage/pgadmin4
+# docker run -d \
+#     -e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+#     -e PGADMIN_DEFAULT_PASSWORD="root" \
+#     -p 8080:80 \
+#     --network=pg-network \
+#     --name=pg-admin \
+#     dpage/pgadmin4
