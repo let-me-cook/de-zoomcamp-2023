@@ -1,5 +1,5 @@
-select passenger_count, count(*)
-from yellow_taxi_data ytd 
-where lpep_pickup_datetime::date = '2019-01-01'
-group by passenger_count 
-order by count(*) desc
+select "PULocationID", zdp."Zone", "DOLocationID", zdd."Zone", tip_amount from yellow_taxi_data ytd 
+left join zone_data zdp on "PULocationID" = zdp."LocationID"
+left join zone_data zdd on "DOLocationID" = zdd."LocationID"
+where zdp."Zone" = 'Astoria'
+order by ytd.tip_amount DESC
