@@ -1,6 +1,6 @@
 URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2019-01.csv.gz"
 
-python etl/etl.py \
+python ./ingest.py \
     --user=root \
     --password=root \
     --host=localhost \
