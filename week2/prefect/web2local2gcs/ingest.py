@@ -15,7 +15,7 @@ def fetch(url: str):
     os.system(f"wget {url} -O {gz_buffer_path}")
     os.system(f"gunzip -f {gz_buffer_path} {csv_buffer_path}")
 
-    df = pd.read_csv(csv_buffer_path)
+    df = pd.read_csv(csv_buffer_path, chunksize=100000)
 
     return df
 
@@ -56,7 +56,7 @@ def write_gcs(path: Path):
 
 @flow(name="Web to Parquet to GCS")
 def main_flow():
-    color = "yellow"
+    color = "green"
     years = [2019]
     months = [2, 3]
 

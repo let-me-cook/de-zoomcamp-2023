@@ -26,7 +26,7 @@ def extract_data(url: str) -> Tuple[TextFileReader, Path]:
     os.system(f"wget {url} -O {gz_buffer_path}")
     os.system(f"gunzip -f {gz_buffer_path} {csv_buffer_path}")
 
-    df = pd.read_csv(csv_buffer_path, nrows=1000)
+    df = pd.read_csv(csv_buffer_path, chunksize=100000)
 
     return df, csv_buffer_path
 

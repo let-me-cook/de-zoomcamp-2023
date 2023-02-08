@@ -63,6 +63,11 @@ def etl_gcs_to_bq():
             df = transform(path)
             write_to_bq(df)
 
+            try:
+                path.unlink()
+            except FileNotFoundError:
+                pass
+
 
 if __name__ == "__main__":
     etl_gcs_to_bq()
