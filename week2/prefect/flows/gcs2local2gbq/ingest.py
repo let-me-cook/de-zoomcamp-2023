@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import List
 import pandas as pd
 from prefect import flow, task
 from prefect_gcp.cloud_storage import GcsBucket
@@ -50,24 +51,26 @@ def write_to_bq(df: pd.DataFrame) -> None:
     )
 
 
-@flow()
-def etl_gcs_to_bq():
+
+@flow(log_prints=True)
+def etl_gcs_to_bq(colors: List[str], years: List[int], months: List[int]):
     """Main ETL flow to load data into Big Query"""
-    color = "yellow"
-    years = [2019]
-    months = [2, 3]
 
-    for year in years:
-        for month in months:
-            path = get_file_from_gcs(color, year, month)
-            df = transform(path)
-            write_to_bq(df)
+    total_rows = 0
 
-            try:
-                path.unlink()
-            except FileNotFoundError:
-                pass
+    for color in colors:
+        for year in years:
+            for month in months:
+                path = get_file_from_gcs(color, year, month)
+                df = transform(path)  # type: ignore
+                write_to_bq(df)
 
+                total_rows += len(df)
 
-if __name__ == "__main__":
-    etl_gcs_to_bq()
+                try:
+                    path.unlink()  # type: ignore
+                except FileNotFoundError:
+                    pass
+            
+    print(total_rows)
+

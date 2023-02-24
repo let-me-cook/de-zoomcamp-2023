@@ -1,6 +1,6 @@
 from prefect.deployments import Deployment
 from prefect.infrastructure.docker import DockerContainer
-from parameterized_ingest import multi_etl_web_to_gcs
+from flows.docker_web2local2gcs import multi_etl_web_to_gcs
 
 docker_block = DockerContainer.load("zoom")
 
