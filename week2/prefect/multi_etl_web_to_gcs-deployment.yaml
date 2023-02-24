@@ -1,0 +1,71 @@
+###
+### A complete description of a Prefect Deployment for flow 'multi-etl-web-to-gcs'
+###
+name: test3
+description: null
+version: 897f4c172e0e35b85b00a1205c9b4ab9
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+work_pool_name: null
+tags: []
+parameters: {}
+schedule: null
+is_schedule_active: null
+infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: multi-etl-web-to-gcs
+manifest_path: null
+infrastructure:
+  type: docker-container
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  image: goldaenjoyer/prefect:zoom
+  image_pull_policy: ALWAYS
+  image_registry: null
+  networks: []
+  network_mode: null
+  auto_remove: true
+  volumes:
+  - /home/user/de-zoomcamp-2023/week2/prefect/flows:/opt/prefect/flows
+  - /home/user/de-zoomcamp-2023/week2/prefect/data:/opt/prefect/data
+  - /home/user/.prefect/storage:/root/.prefect/storage
+  stream_output: true
+  memswap_limit: null
+  mem_limit: null
+  privileged: false
+  _block_document_id: bad9cde9-c145-4f37-93d3-7ef8de1b5cc1
+  _block_document_name: test
+  _is_anonymous: false
+  block_type_slug: docker-container
+  _block_type_slug: docker-container
+storage: null
+path: /opt/prefect/flows
+entrypoint: flows/docker_web2local2gcs/parameterized_ingest.py:multi_etl_web_to_gcs
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    colors:
+      title: colors
+      position: 0
+    years:
+      title: years
+      position: 1
+    months:
+      title: months
+      position: 2
+    test:
+      title: test
+      default: 1
+      position: 3
+  required:
+  - colors
+  - years
+  - months
+  definitions: null
+timestamp: '2023-02-24T17:43:29.407701+00:00'

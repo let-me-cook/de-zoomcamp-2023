@@ -9,7 +9,7 @@ from prefect_gcp import GcpCredentials
 def get_file_from_gcs(color: str, year: int, month: int) -> Path:
     file = f"{color}_tripdata_{year}-{month:02}.parquet"
     gcs_path = Path() / file
-    local_path = Path() / "data" / file
+    local_path = Path() / file
 
     gcs_block = GcsBucket.load("prefect-gcs-dtc")
     assert isinstance(gcs_block, GcsBucket)
@@ -38,11 +38,11 @@ def transform(path: Path) -> pd.DataFrame:
 def write_to_bq(df: pd.DataFrame) -> None:
     """Write DataFrame to BiqQuery"""
 
-    gcp_credentials_block = GcpCredentials.load("creds-dtc")
+    gcp_credentials_block = GcpCredentials.load("prefect-creds-dtc")
     assert isinstance(gcp_credentials_block, GcpCredentials)
 
     df.to_gbq(
-        destination_table="prefect_dataset_dlc.ny_taxi",
+        destination_table="prefect_dataset_dtc.ny_taxi",
         project_id="de-dtc-375915",
         credentials=gcp_credentials_block.get_credentials_from_service_account(),
         chunksize=500_000,

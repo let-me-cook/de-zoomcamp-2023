@@ -63,8 +63,8 @@ def load_data_v2(df: pd.DataFrame, table_name: str):
         df.to_sql(name=table_name, con=engine, if_exists="append")
 
 
-@flow(name="Web to CSV to Postgres")
-def main_flow():
+@flow()
+def etl_web_to_postgres():
     table_name = "green_taxi_trips_prefect"
     csv_url = (
         "https://github.com/DataTalksClub/nyc-tlc-data/"
@@ -82,4 +82,4 @@ def main_flow():
 
 
 if __name__ == "__main__":
-    main_flow()
+    etl_web_to_postgres()

@@ -1,10 +1,14 @@
+import os
+from datetime import timedelta
 from pathlib import Path
+
 import pandas as pd
 from prefect import flow, task
+from prefect.tasks import task_input_hash
 from prefect_gcp.cloud_storage import GcsBucket
-import os
 
-@task()
+
+@task(retries=3, cache_key_fn=task_input_hash, cache_expiration=timedelta(days=1))
 def fetch(url: str):
     csv_buffer_path = Path() / "buffer.csv"
     gz_buffer_path = Path() / "buffer.csv.gz"
@@ -15,9 +19,11 @@ def fetch(url: str):
     os.system(f"wget {url} -O {gz_buffer_path}")
     os.system(f"gunzip -f {gz_buffer_path} {csv_buffer_path}")
 
-    df = pd.read_csv(csv_buffer_path, chunksize=100000)
+    df = pd.read_csv(csv_buffer_path)
 
     return df
+
+
 
 
 @task()
@@ -54,26 +60,32 @@ def write_gcs(path: Path):
     return
 
 
-@flow(name="Web to Parquet to GCS")
-def main_flow():
-    color = "green"
-    years = [2019]
-    months = [2, 3]
+@flow()
+def etl_web_to_gcs(color, year, month):
+    dataset_file = f"{color}_tripdata_{year}-{month:02}"
+    dataset_url = (
+        "https://github.com/DataTalksClub/nyc-tlc-data/"
+        f"releases/download/{color}/{dataset_file}.csv.gz"
+    )
 
-    for year in years:
-        for month in months:
-            dataset_file = f"{color}_tripdata_{year}-{month:02}"
-            dataset_url = (
-                "https://github.com/DataTalksClub/nyc-tlc-data/"
-                f"releases/download/{color}/{dataset_file}.csv.gz"
-            )
+    df = fetch(dataset_url)
+    df = clean(df, color)
+    path = write_local(df, color, dataset_file)
+    write_gcs(path)
+    path.unlink()
 
-            df = fetch(dataset_url)
-            df = clean(df, color)
-            path = write_local(df, color, dataset_file)
-            write_gcs(path)
-            path.unlink()
+
+@flow()
+def multi_etl_web_to_gcs(colors, years, months):
+    for color in colors:
+        for year in years:
+            for month in months:
+                etl_web_to_gcs(color, year, month)
 
 
 if __name__ == "__main__":
-    main_flow()
+    colors = ["yellow"]
+    months = [2, 3]
+    years = [2021]
+
+    multi_etl_web_to_gcs(colors, years, months)

@@ -1,0 +1,65 @@
+###
+### A complete description of a Prefect Deployment for flow 'multi-etl-web-to-gcs'
+###
+name: Parameterized multi_etl_web_to_gcs
+description: null
+version: eae4db2046d83b3b1c576a152302f6c2
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+work_pool_name: default-agent-pool
+tags: []
+parameters:
+  colors:
+  - yellow
+  months:
+  - 2
+  - 3
+  years:
+  - 2020
+schedule:
+  cron: 0 0 * * *
+  timezone: null
+  day_or: true
+is_schedule_active: true
+infra_overrides: {}
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: multi-etl-web-to-gcs
+manifest_path: null
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command: null
+  stream_output: true
+  working_dir: null
+  _block_document_id: d4eda150-d41d-4e57-8e64-12e0ba11d6cd
+  _block_document_name: anonymous-5df2bbc5-f631-462e-8c5a-0fdf9a844892
+  _is_anonymous: true
+  block_type_slug: process
+  _block_type_slug: process
+storage: null
+path: /home/user/de-zoomcamp-2023/week2/prefect/web2local2gcs
+entrypoint: parameterized_ingest.py:multi_etl_web_to_gcs
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    colors:
+      title: colors
+      position: 0
+    years:
+      title: years
+      position: 1
+    months:
+      title: months
+      position: 2
+  required:
+  - colors
+  - years
+  - months
+  definitions: null
+timestamp: '2023-02-10T18:18:46.978521+00:00'
