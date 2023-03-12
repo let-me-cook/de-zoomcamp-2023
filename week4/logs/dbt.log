@@ -1,0 +1,26 @@
+
+
+============================== 2023-03-12 16:09:49.645797 | 695c5d6f-e5eb-4c46-8b21-fea215facc15 ==============================
+[0m16:09:49.645797 [info ] [MainThread]: Running with dbt=1.4.5
+[0m16:09:49.647359 [debug] [MainThread]: running dbt with arguments {'write_json': True, 'use_colors': True, 'printer_width': 80, 'version_check': True, 'partial_parse': True, 'static_parser': True, 'profiles_dir': '/home/user/.dbt', 'send_anonymous_usage_stats': True, 'quiet': False, 'no_print': False, 'cache_selected_only': False, 'skip_profile_setup': False, 'which': 'init', 'indirect_selection': 'eager'}
+[0m16:09:49.647581 [debug] [MainThread]: Tracking: tracking
+[0m16:09:49.649053 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f94e4a5c750>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f94e49c38d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f94e49c2d90>]}
+[0m16:10:05.973549 [debug] [MainThread]: Starter project path: /home/user/anaconda3/envs/dtc/lib/python3.11/site-packages/dbt/include/starter_project
+[0m16:10:07.518296 [info ] [MainThread]: 
+Your new dbt project "dbt_zoomcamp" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m16:10:07.518765 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f94e499e550>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f94e499ee10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f94e4a5c750>]}
+[0m16:10:07.519074 [debug] [MainThread]: Flushing usage events
