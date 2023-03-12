@@ -45,7 +45,12 @@ def web_to_gcs(service: str, year: int, m: int):
 
     request_url = f"{init_url}{service}/{file_name}.csv.gz"
     os.system(f"wget -nc {request_url} -O {l_csv_file}")
-    transform_df(pd.read_csv(l_csv_file)).to_parquet(l_par_file, engine="pyarrow")
+
+    if service == "yellow":
+        transform_yellow(pd.read_csv(l_csv_file)).to_parquet(l_par_file, engine="pyarrow")
+    if service == "green":
+        transform_green(pd.read_csv(l_csv_file)).to_parquet(l_par_file, engine="pyarrow")
+
     # pd.read_csv(l_csv_file).to_parquet(l_par_file, engine="pyarrow")
     print(f"Local csv file: {l_csv_file}")
     print(f"Local parquet file: {l_par_file}")
@@ -53,11 +58,60 @@ def web_to_gcs(service: str, year: int, m: int):
     upload_to_gcs(BUCKET, str(gcs_file), str(l_par_file))
     print(f"GCS: {gcs_file}")
 
-    l_par_file.unlink()
+    # l_par_file.unlink()
     # l_csv_file.unlink()
 
-def transform_df(df: pd.DataFrame):
-    return df.convert_dtypes(infer_objects=True)
+
+def transform_green(df_green: pd.DataFrame):
+    return df_green.astype(
+        {
+            "VendorID": "Int64",
+            "lpep_pickup_datetime": "string",
+            "lpep_dropoff_datetime": "string",
+            "store_and_fwd_flag": "string",
+            "RatecodeID": "Int64",
+            "PULocationID": "Int64",
+            "DOLocationID": "Int64",
+            "passenger_count": "Int64",
+            "trip_distance": "Float64",
+            "fare_amount": "Float64",
+            "extra": "Float64",
+            "mta_tax": "Float64",
+            "tip_amount": "Float64",
+            "tolls_amount": "Float64",
+            "ehail_fee": "Float64",
+            "improvement_surcharge": "Float64",
+            "total_amount": "Float64",
+            "payment_type": "Float64",
+            "trip_type": "Float64",
+            "congestion_surcharge": "Float64",
+        }
+    )
+
+
+def transform_yellow(df_yellow: pd.DataFrame):
+    return df_yellow.astype(
+        {
+            "VendorID": "Int64",
+            "tpep_pickup_datetime": "string",
+            "tpep_dropoff_datetime": "string",
+            "passenger_count": "Int64",
+            "trip_distance": "Float64",
+            "RatecodeID": "Int64",
+            "store_and_fwd_flag": "string",
+            "PULocationID": "Int64",
+            "DOLocationID": "Int64",
+            "payment_type": "Int64",
+            "fare_amount": "Float64",
+            "extra": "Float64",
+            "mta_tax": "Float64",
+            "tip_amount": "Float64",
+            "tolls_amount": "Float64",
+            "improvement_surcharge": "Float64",
+            "total_amount": "Float64",
+            "congestion_surcharge": "Float64",
+        }
+    )
 
 
 for service in ["yellow", "green"]:
